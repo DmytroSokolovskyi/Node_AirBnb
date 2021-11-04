@@ -1,0 +1,789 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "Node.js HW",
+    "description": "First APP",
+    "contact": {
+      "name": "Dmytro",
+      "email": "qwerty@gmail.com"
+    }
+  },
+  "paths": {
+    "/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "getAllUsers",
+        "description": "When you get all users",
+        "parameters": [
+          {
+            "name": "perPage",
+            "type": "number",
+            "in": "query",
+            "default": "20",
+            "required": false
+          },
+          {
+            "name": "page",
+            "type": "number",
+            "in": "query",
+            "default": "1",
+            "required": false
+          },
+          {
+            "name": "order",
+            "type": "string",
+            "in": "query",
+            "enum": [ "asc", "desc" ],
+            "default": "asc",
+            "required": false
+          },
+          {
+            "name": "sortBy",
+            "type": "string",
+            "in": "query",
+            "default": "createdAt",
+            "required": false
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "in": "query",
+            "default": "Qwerty",
+            "required": false
+          },
+          {
+            "name": "role",
+            "type": "string",
+            "in": "query",
+            "enum": ["admin", "user", "manager"],
+            "default": "user",
+            "required": false
+          },
+          {
+            "name": "email",
+            "type": "string",
+            "in": "query",
+            "default": "qwerty@gmail.com",
+            "required": false
+          },
+          {
+            "name": "ageGte",
+            "type": "number",
+            "in": "query",
+            "default": "17",
+            "required": false
+          },
+          {
+            "name": "ageLte",
+            "type": "number",
+            "in": "query",
+            "default": "41",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/user"
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/responses/500"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "Create User",
+        "description": "When you create new user",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "formData",
+            "default": "Qwerty",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "default": "Q323zzzRz3%$#5vxcv",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "default": "qwerty@gmail.com",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "$ref": "#/responses/201"
+          },
+          "400": {
+            "$ref": "#/responses/400"
+          },
+          "409": {
+            "$ref": "#/responses/409"
+          },
+          "500": {
+            "$ref": "#/responses/500"
+          }
+        }
+      }
+    },
+    "/users/:user_id": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "getUserById",
+        "description": "When you get user by ID",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "MongoDB ID",
+            "default": "6177afbf0d4ab56064382dbe"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/400"
+          },
+          "404": {
+            "$ref": "#/responses/404"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "deleteUserById",
+        "description": "When you delete user by ID",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string",
+            "required": true,
+            "description": "This is JWT `access_token` from POST /auth endpoint",
+            "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzQ2NDc2MzAsImV4cCI6MTYzNDY1MTIzMH0.2xdjORFeoP67rJkdQcpQLrlst8MW6RCrqvolSsJcZSM"
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "MongoDB ID",
+            "default": "6177afbf0d4ab56064382dbe"
+          }
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/responses/204"
+          },
+          "400": {
+            "$ref": "#/responses/400"
+          },
+          "401": {
+            "$ref": "#/responses/401"
+          },
+          "403": {
+            "$ref": "#/responses/403"
+          },
+          "404": {
+            "$ref": "#/responses/404"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "updateUserById",
+        "description": "When you edit user by ID",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string",
+            "required": true,
+            "description": "This is JWT `access_token` from POST /auth endpoint",
+            "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzQ2NDc2MzAsImV4cCI6MTYzNDY1MTIzMH0.2xdjORFeoP67rJkdQcpQLrlst8MW6RCrqvolSsJcZSM"
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "MongoDB ID",
+            "default": "6177afbf0d4ab56064382dbe"
+          },
+          {
+            "name": "name",
+            "in": "formData",
+            "type": "string",
+            "required": false,
+            "default": "Nestor"
+          },
+          {
+            "name": "role",
+            "in": "formData",
+            "type": "string",
+            "required": false,
+            "description": "role",
+            "enum": [
+              "user",
+              "admin",
+              "manager"
+            ],
+            "default": "user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/400"
+          },
+          "401": {
+            "$ref": "#/responses/401"
+          },
+          "403": {
+            "$ref": "#/responses/403"
+          },
+          "404": {
+            "$ref": "#/responses/404"
+          }
+        }
+      }
+    },
+    "/users/car/:user_id": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "operationId": "newCarToUser",
+        "description": "When you set new car to user by ID",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string",
+            "required": true,
+            "description": "This is JWT `access_token` from POST /auth endpoint",
+            "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzQ2NDc2MzAsImV4cCI6MTYzNDY1MTIzMH0.2xdjORFeoP67rJkdQcpQLrlst8MW6RCrqvolSsJcZSM"
+          },
+          {
+            "name": "user_id",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "MongoDB ID",
+            "default": "6177afbf0d4ab56064382dbe"
+          },
+          {
+            "name": "model",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "default": "BMW"
+          },
+          {
+            "name": "year",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "default": "2018"
+          },
+          {
+            "name": "price",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "default": "342000"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/user"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/400"
+          },
+          "401": {
+            "$ref": "#/responses/401"
+          },
+          "403": {
+            "$ref": "#/responses/403"
+          },
+          "404": {
+            "$ref": "#/responses/404"
+          }
+        }
+      }
+    },
+    "/auth": {
+      "post": {
+        "tags": [
+          "Users Auth"
+        ],
+        "operationId": "Login",
+        "description": "When you authorization",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "formData",
+            "default": "qwerty@gmail.com",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "default": "Q323zzzRz3%$#5vxcv",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/userWithTokens"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/400"
+          },
+          "500": {
+            "$ref": "#/responses/500"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Users Auth"
+        ],
+        "operationId": "LogOut",
+        "description": "When you exit",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string",
+            "required": true,
+            "description": "This is JWT `access_token` from POST /auth endpoint",
+            "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzQ2NDc2MzAsImV4cCI6MTYzNDY1MTIzMH0.2xdjORFeoP67rJkdQcpQLrlst8MW6RCrqvolSsJcZSM"
+          }
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/responses/204"
+          },
+          "400": {
+            "$ref": "#/responses/400"
+          },
+          "401": {
+            "$ref": "#/responses/401"
+          },
+          "500": {
+            "$ref": "#/responses/500"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users Auth"
+        ],
+        "operationId": "changePassword",
+        "description": "When you change password",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string",
+            "required": true,
+            "description": "This is JWT `access_token` from POST /auth endpoint",
+            "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzQ2NDc2MzAsImV4cCI6MTYzNDY1MTIzMH0.2xdjORFeoP67rJkdQcpQLrlst8MW6RCrqvolSsJcZSM"
+          },
+          {
+            "name": "oldPassword",
+            "in": "formData",
+            "default": "1212zzzRz3%$#51111",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "newPassword",
+            "in": "formData",
+            "default": "Q323zzzRz3%$#5vxcv",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/responses/204"
+          },
+          "400": {
+            "$ref": "#/responses/400"
+          },
+          "401": {
+            "$ref": "#/responses/401"
+          },
+          "500": {
+            "$ref": "#/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/activate/:token": {
+      "get": {
+        "tags": [
+          "Users Auth"
+        ],
+        "operationId": "Activate",
+        "description": "When you activate account from email",
+        "parameters": [
+          {
+            "name": "action_token",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "This is JWT `action_token` from email",
+            "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzQ2NDc2MzAsImV4cCI6MTYzNDY1MTIzMH0.2xdjORFeoP67rJkdQcpQLrlst8MW6RCrqvolSsJcZSM"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "NO_CONTENT",
+            "schema": {
+              "properties": {
+                "code": {
+                  "type": "number",
+                  "example": 204
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/400"
+          },
+          "500": {
+            "$ref": "#/responses/500"
+          }
+        }
+      }
+    },
+    "/auth/password/forgot": {
+      "put": {
+        "tags": [
+          "Users Auth"
+        ],
+        "operationId": "setNewPass",
+        "description": "When you set new password",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string",
+            "required": true,
+            "description": "This is JWT `action_token` from POST /auth/password/forgot endpoint",
+            "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzQ2NDc2MzAsImV4cCI6MTYzNDY1MTIzMH0.2xdjORFeoP67rJkdQcpQLrlst8MW6RCrqvolSsJcZSM"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "default": "Q323zzzRz3%$#5vxcv",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/responses/204"
+          },
+          "400": {
+            "$ref": "#/responses/400"
+          },
+          "401": {
+            "$ref": "#/responses/401"
+          },
+          "500": {
+            "$ref": "#/responses/500"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users Auth"
+        ],
+        "operationId": "forgotPass",
+        "description": "When you forgot password",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "formData",
+            "default": "qwerty@gmail.com",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "$ref": "#/responses/204"
+          },
+          "400": {
+            "$ref": "#/responses/400"
+          },
+          "401": {
+            "$ref": "#/responses/401"
+          },
+          "500": {
+            "$ref": "#/responses/500"
+          }
+        }
+      }
+    }
+  },
+  "responses": {
+    "201": {
+      "description": "User was created",
+      "schema": {
+        "$ref": "#/definitions/user"
+      }
+    },
+    "204": {
+      "description": "NO_CONTENT",
+      "schema": {
+        "properties": {
+          "code": {
+            "type": "number",
+            "example": 204
+          }
+        }
+      }
+    },
+    "400": {
+      "description": "BAD_REQUEST",
+      "schema": {
+        "properties": {
+          "msg": {
+            "type": "string",
+            "example": "Syntax error in request"
+          },
+          "code": {
+            "type": "number",
+            "example": 400
+          }
+        }
+      }
+    },
+    "401": {
+      "description": "UNAUTHORIZED",
+      "schema": {
+        "properties": {
+          "msg": {
+            "type": "string",
+            "example": "Invalid token"
+          },
+          "code": {
+            "type": "number",
+            "example": 401
+          }
+        }
+      }
+    },
+    "403": {
+      "description": "FORBIDDEN",
+      "schema": {
+        "properties": {
+          "msg": {
+            "type": "string",
+            "example": "Access restrictions for the client"
+          },
+          "code": {
+            "type": "number",
+            "example": 403
+          }
+        }
+      }
+    },
+    "404": {
+      "description": "NOT_FOUND",
+      "schema": {
+        "properties": {
+          "msg": {
+            "type": "string",
+            "example": "No user with this data"
+          },
+          "code": {
+            "type": "number",
+            "example": 404
+          }
+        }
+      }
+    },
+    "409": {
+      "description": "CONFLICT",
+      "schema": {
+        "properties": {
+          "msg": {
+            "type": "string",
+            "example": "User with such data is already present"
+          },
+          "code": {
+            "type": "number",
+            "example": 409
+          }
+        }
+      }
+    },
+    "500": {
+      "description": "SERVER_ERROR",
+      "schema": {
+        "properties": {
+          "msg": {
+            "type": "string",
+            "example": "Internal server error"
+          },
+          "code": {
+            "type": "number",
+            "example": 500
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "user": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "6177afbf0d4ab56064382dbe",
+          "description": "MongoDB ID"
+        },
+        "name": {
+          "type": "string",
+          "example": "Qwerty"
+        },
+        "email": {
+          "type": "string",
+          "example": "qwerty@gmail.com"
+        },
+        "age": {
+          "type": "number",
+          "example": "20"
+        },
+        "role": {
+          "type": "string",
+          "example": "user"
+        },
+        "activate": {
+          "type": "boolean",
+          "example": false
+        },
+        "cars": {
+          "type": "array",
+          "items": {
+            "properties": {
+              "_id": {
+                "type": "string",
+                "example": "6177afbf0d4ab56064382dbe",
+                "description": "MongoDB ID"
+              }
+            }
+          }
+        }
+      }
+    },
+    "userWithTokens": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "object",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "example": "6177afbf0d4ab56064382dbe",
+              "description": "MongoDB ID"
+            },
+            "name": {
+              "type": "string",
+              "example": "Qwerty"
+            },
+            "email": {
+              "type": "string",
+              "example": "qwerty@gmail.com"
+            },
+            "age": {
+              "type": "number",
+              "example": "20"
+            },
+            "role": {
+              "type": "string",
+              "example": "user"
+            },
+            "activate": {
+              "type": "boolean",
+              "example": false
+            },
+            "cars": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "example": "6177afbf0d4ab56064382dbe",
+                    "description": "MongoDB ID"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "access_token": {
+          "type": "string",
+          "description": "JWT `access_token`",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzUyNzE5OTYsImV4cCI6MTYzNTI3NTU5Nn0.9ayUMUS2HI6i9UrC8v_1mn8DB88YTqgbaXiknnTT3Ns"
+        },
+        "refresh_token": {
+          "type": "string",
+          "description": "JWT `refresh_token`",
+          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzUyNzE5OTYsImV4cCI6MTYzNTI3NTU5Nn0.9ayUMUS2HI6i9UrC8v_1mn8DB88YTqgbaXiknnTT3Ns"
+        }
+      }
+    }
+  }
+}

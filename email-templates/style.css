@@ -1,0 +1,19 @@
+.header {
+    background-color: #c7c5c5;
+    border: 1px solid gray;
+    text-align: center;
+}
+
+.content {
+
+}
+.footer {
+    background-color: #c7c5c5;
+    border: 1px solid gray;
+    text-align: center;
+}
+
+img {
+    height: 200px;
+    width: 70%;
+}
